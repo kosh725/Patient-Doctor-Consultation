@@ -60,7 +60,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:$rootProject.firestoreVersion"
     implementation "com.google.firebase:firebase-storage:$rootProject.firebaseStorageVersion"
         //facebook
-    implementation 'com.facebook.android:facebook-android-sdk:4.36.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.35.0'
 
     //FAB
     implementation "com.getbase:floatingactionbutton:$rootProject.FABVersion"

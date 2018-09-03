@@ -91,6 +91,14 @@ public class NavigationActivity extends AppCompatActivity {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
                         .build(), RC_SIGN_IN);
+    }
+
+    //LogsOut everytime close app
+    @Override
+    protected void onPause() {
+        AuthUI.getInstance().signOut(this);
+        super.onPause();
     }
 }
