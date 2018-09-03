@@ -12,7 +12,9 @@ import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -61,6 +63,7 @@ public class NavigationActivity extends AppCompatActivity {
         });
     }
 
+    /*n
     private void startSignIn() {
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
@@ -70,5 +73,24 @@ public class NavigationActivity extends AppCompatActivity {
                 .build();
 
         startActivityForResult(intent, RC_SIGN_IN);
+    }
+    n*/
+
+    private void startSignIn() {
+        //Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+        //        .setAvailableProviders(Collections.singletonList(
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build());
+        //.setIsSmartLockEnabled(false)
+        //.build();
+
+        //startActivityForResult(intent, RC_SIGN_IN);
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(), RC_SIGN_IN);
     }
 }
