@@ -2,7 +2,7 @@ package com.group4.patientdoctorconsultation.data.model;
 
 import com.group4.patientdoctorconsultation.common.IndexedFirestoreResource;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 
 public class Profile extends IndexedFirestoreResource {
@@ -17,7 +17,7 @@ public class Profile extends IndexedFirestoreResource {
     public static final String FIELD_FIRST_NAME = "firstName";
     public static final String FIELD_LAST_NAME = "lastName";
     public static final String FIELD_GENDER = "gender";
-    public static final String FIELD_AGE_IN_YEARS = "ageInYears";
+    public static final String FIELD_AGE_IN_YEARS = "dateOfBirth";
     public static final String FIELD_HEIGHT_IN_CENTIMETRES = "heightInCentimetres";
     public static final String FIELD_WEIGHT_IN_KG = "weightInKg";
     public static final String FIELD_MEDICAL_CONDITIONS = "medicalConditions";
@@ -28,10 +28,10 @@ public class Profile extends IndexedFirestoreResource {
     private String firstName;
     private String lastName;
     private String gender;
-    private int ageInYears;
+    private Date dateOfBirth;
     private String heightInCentimetres;
     private String weightInKg;
-    private List<String> medicalConditions;
+    private String medicalConditions;
     private Map<String, Boolean> linkedProfiles;
 
     public String getProfileType() {
@@ -74,12 +74,12 @@ public class Profile extends IndexedFirestoreResource {
         this.gender = gender;
     }
 
-    public int getAgeInYears() {
-        return ageInYears;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setAgeInYears(int ageInYears) {
-        this.ageInYears = ageInYears;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getHeightInCentimetres() {
@@ -98,11 +98,11 @@ public class Profile extends IndexedFirestoreResource {
         this.weightInKg = weightInKg;
     }
 
-    public List<String> getMedicalConditions() {
+    public String getMedicalConditions() {
         return medicalConditions;
     }
 
-    public void setMedicalConditions(List<String> medicalConditions) {
+    public void setMedicalConditions(String medicalConditions) {
         this.medicalConditions = medicalConditions;
     }
 

@@ -10,18 +10,19 @@ public class DataPacketItemManager {
 
     public static DataPacket buildDataPacket(DataPacket dataPacket, List<DataPacketItem> packetItems) {
         if (packetItems == null || packetItems.isEmpty()) {
-            return null;
+            return dataPacket;
         }
 
         List<String> documentReferences = new ArrayList<>();
         List<String> comments = new ArrayList<>();
         List<String> notes = new ArrayList<>();
         List<String> locations = new ArrayList<>();
+        String heartRate = "";
 
         for (DataPacketItem dataPacketItem : packetItems) {
             switch (dataPacketItem.getDataPacketItemType()) {
                 case HEART_RATE:
-                    dataPacket.setHeartRate(dataPacketItem.getValue());
+                    heartRate = dataPacketItem.getValue();
                     break;
                 case DOCUMENT_REFERENCE:
                     documentReferences.add(dataPacketItem.getValue());
@@ -38,6 +39,7 @@ public class DataPacketItemManager {
             }
         }
 
+        dataPacket.setHeartRate(heartRate);
         dataPacket.setDocumentReferences(documentReferences);
         dataPacket.setComments(comments);
         dataPacket.setNotes(notes);
@@ -49,7 +51,7 @@ public class DataPacketItemManager {
     public static List<DataPacketItem> breakDownDataPacket(DataPacket newPacket) {
         List<DataPacketItem> dataPacketItems = new ArrayList<>();
 
-        if (newPacket.getHeartRate() != null) {
+        if (newPacket.getHeartRate() != null && !newPacket.getHeartRate().equals("")) {
             dataPacketItems.add(new DataPacketItem(DataPacketItem.DataPacketItemType.HEART_RATE, newPacket.getHeartRate()));
         }
 

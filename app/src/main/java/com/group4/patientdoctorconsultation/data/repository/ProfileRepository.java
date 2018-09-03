@@ -33,6 +33,10 @@ public class ProfileRepository {
     }
 
     public LiveQuery<Profile> getLinkedProfiles(String profileId){
+        if(profileId == null || profileId.equals("")){
+            profileId = "1";
+        }
+
         return new LiveQuery<>(
                 profileCollection.whereEqualTo(Profile.FIELD_LINKED_PROFILES + "." + profileId, true),
                 Profile.class
