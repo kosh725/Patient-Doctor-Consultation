@@ -19,7 +19,7 @@
             android:layout_margin="10dp"
             android:textSize="18sp"
             android:gravity="center"
-            android:text="Hole index finger over camera and flash (if present) for at least 10 seconds. \n\n The longer you hold your finger, the more accurate the measurement" />
+            android:text="Hold index finger over camera and flash (if present) for at least 10 seconds. \n\n The longer you hold your finger, the more accurate the measurement" />
 
     </LinearLayout>
 

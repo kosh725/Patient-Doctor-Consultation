@@ -37,6 +37,10 @@ buildscript {
 
         //Maps
         mapVersion = '15.0.1'
+
+        //Tests
+        jUnitVersion = '4.12'
+        espressoVersion = '3.0.1'
     }
 
     repositories {

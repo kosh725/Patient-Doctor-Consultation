@@ -70,6 +70,14 @@ dependencies {
     //Maps
     implementation "com.google.android.gms:play-services-places:$rootProject.mapVersion"
     implementation "com.google.android.gms:play-services-location:$rootProject.mapVersion"
+
+    //Tests
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    testImplementation "junit:junit:$rootProject.jUnitVersion"
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

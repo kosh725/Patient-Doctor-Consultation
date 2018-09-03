@@ -16,7 +16,7 @@ import java.util.Locale;
 public class BindingAdapters {
 
     private static final String TAG = BindingAdapters.class.getSimpleName();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
 
     @BindingAdapter("android:src")
     public static void setImageResource(ImageView imageView, int resource){
