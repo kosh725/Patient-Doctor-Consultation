@@ -17,14 +17,15 @@
             type="com.group4.patientdoctorconsultation.data.model.Profile" />
 
     </data>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp">
 
         <EditText
             android:id="@+id/edit_first_name"
@@ -56,6 +57,7 @@
             android:id="@+id/edit_age"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+
             android:ems="10"
             android:hint="@string/profile_hint_age"
             android:inputType="textPersonName"
@@ -70,11 +72,13 @@
             android:id="@+id/edit_gender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
             android:ems="10"
             android:hint="@string/profile_hint_gender"
             android:inputType="textPersonName"
             android:text="@={profile.gender}"
-            app:layout_constraintBottom_toTopOf="@+id/edit_height"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_age" />
@@ -83,37 +87,43 @@
             android:id="@+id/edit_height"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
             android:ems="10"
             android:hint="@string/profile_hint_height"
             android:inputType="text"
             android:text="@={profile.heightInCentimetres}"
-            app:layout_constraintBottom_toTopOf="@+id/edit_gender"
+
             app:layout_constraintEnd_toStartOf="@+id/edit_weight"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_medical_conditions" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_gender" />
 
         <EditText
             android:id="@+id/edit_weight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
             android:ems="10"
             android:hint="@string/profile_hint_weight"
             android:inputType="text"
             android:text="@={profile.weightInKg}"
-            app:layout_constraintBottom_toTopOf="@+id/edit_gender"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_height"
-            app:layout_constraintTop_toBottomOf="@+id/edit_medical_conditions" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_gender" />
 
         <EditText
             android:id="@+id/edit_medical_conditions"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
             android:ems="10"
             android:hint="@string/profile_medical_conditions"
             android:inputType="textMultiLine"
             android:text="@={profile.medicalConditions}"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -187,9 +197,9 @@
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="150dp"
             android:onClick="@{profileHandler::submit}"
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -197,6 +207,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_medical_conditions" />
 
+
     </android.support.constraint.ConstraintLayout>
 
+</ScrollView>
 </layout>
