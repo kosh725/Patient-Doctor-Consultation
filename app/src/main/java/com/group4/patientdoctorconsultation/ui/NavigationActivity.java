@@ -16,7 +16,9 @@ import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -70,14 +72,25 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     private void startSignIn() {
-        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(Collections.singletonList(
-                        new AuthUI.IdpConfig.GoogleBuilder().build()
-                ))
-                .setIsSmartLockEnabled(false)
-                .build();
 
-        startActivityForResult(intent, RC_SIGN_IN);
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build());
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
+                        .build(), RC_SIGN_IN);
+    }
+
+    //LogsOut everytime close app
+    @Override
+    protected void onPause() {
+        AuthUI.getInstance().signOut(this);
+        super.onPause();
     }
 
     private void requestAllPermissions() {
