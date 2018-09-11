@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.common.FirestoreFragment;
 import com.group4.patientdoctorconsultation.databinding.FragmentProfileBinding;
@@ -31,6 +32,7 @@ public class ProfileFragment extends FirestoreFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
          binding.setProfileHandler(this);
+         binding.button.setOnLongClickListener(view -> logout(null));
          bindAge(binding.editAge);
          observeProfile();
          return binding.getRoot();
@@ -70,5 +72,10 @@ public class ProfileFragment extends FirestoreFragment {
                 Toast.makeText(requireContext(), "Saved",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public boolean logout(View view){ //Do not remove parameter, required for data binding
+        FirebaseAuth.getInstance().signOut();
+        return true;
     }
 }

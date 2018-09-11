@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.group4.patientdoctorconsultation.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -53,7 +55,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     for (PlaceLikelihood placeLikelihood : likelyPlaces) {
                         Place currentPlace = placeLikelihood.getPlace().freeze();
                         for(int type : currentPlace.getPlaceTypes()){
-                            if(type == Place.TYPE_HEALTH){
+                            if(true){//type == Place.TYPE_HEALTH || type == Place.TYPE_DOCTOR || type == Place.TYPE_HOSPITAL  ){
                                 markerOptions = new MarkerOptions();
 
                                 markerOptions.position(currentPlace.getLatLng())

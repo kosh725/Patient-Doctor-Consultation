@@ -86,13 +86,6 @@ public class NavigationActivity extends AppCompatActivity {
                         .build(), RC_SIGN_IN);
     }
 
-    //LogsOut everytime close app
-    @Override
-    protected void onPause() {
-        AuthUI.getInstance().signOut(this);
-        super.onPause();
-    }
-
     private void requestAllPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (
                 this.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||

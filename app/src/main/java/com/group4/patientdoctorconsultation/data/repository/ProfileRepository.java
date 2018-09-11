@@ -17,6 +17,9 @@ public class ProfileRepository {
     }
 
     public LiveDocument<Profile> profileFromUserId(String userId){
+        if(userId == null || userId.isEmpty()){
+            userId = "1";
+        }
         return new LiveDocument<>(
                 profileCollection.document(userId),
                 Profile.class
