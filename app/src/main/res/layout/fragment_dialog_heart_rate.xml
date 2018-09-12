@@ -13,21 +13,72 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/text1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_margin="10dp"
             android:textSize="18sp"
             android:gravity="center"
             android:text="Hole index finger over camera and flash (if present) for at least 10 seconds. \n\n The longer you hold your finger, the more accurate the measurement" />
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/top"
+        android:id="@+id/relativelayout">
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_text"
+            android:textColor="@color/colorAccent"
+            android:textSize="50sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/text"
+            android:text="@string/bpm"
+            android:textColor="@color/colorAccent"
+            android:textSize="50sp"/>
+
+
+    </RelativeLayout>
 
     <SurfaceView
         android:id="@+id/preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/top"/>
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@id/preview">
+        <Button
+            android:id="@+id/retry"
+            android:onClick="retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="@string/retry"
+            android:textColor="@color/colorOffWhite"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/refer"
+            android:onClick="refer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="220dp"
+            android:background="@color/colorAccent"
+            android:text="@string/refer"
+            android:textColor="@color/colorOffWhite"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/heart_icon"

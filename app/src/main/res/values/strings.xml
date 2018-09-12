@@ -31,4 +31,11 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">264592337713075</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb264592337713075</string>
+    <string name="default_text">- -</string>
+    <string name="bpm">bpm</string>
+    <string name="hints">(hints: Please wait about 5-10s)</string>
+    <string name="refer">Reference</string>
+    <string name="details">
+Adults have about seventy to eighty beats per minute, but between 60 and 100 times are normal. When you work, you have to jump faster than when you are quiet. Women are faster than men. Children are jumping faster than adults. Newborns can jump 150 times per minute.</string>
+    <string name="retry">retry</string>
 </resources>

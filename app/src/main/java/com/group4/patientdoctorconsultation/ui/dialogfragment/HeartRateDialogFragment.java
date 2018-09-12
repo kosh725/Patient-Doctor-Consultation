@@ -1,21 +1,28 @@
 package com.group4.patientdoctorconsultation.ui.dialogfragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.hardware.Camera;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.common.PacketItemDialog;
 import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
+import com.group4.patientdoctorconsultation.referenceActivity;
 import com.group4.patientdoctorconsultation.utilities.ImageProcessor;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeartRateDialogFragment extends PacketItemDialog {
@@ -48,6 +55,41 @@ public class HeartRateDialogFragment extends PacketItemDialog {
     private static final int[] beatsArray = new int[beatsArraySize];
     private static double beats = 0;
     private static long startTime = 0;
+    Button retry;
+    Button refer;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+      View view=inflater.inflate(R.layout.fragment_dialog_heart_rate,null);
+
+        retry = (Button) Objects.requireNonNull(getActivity()).findViewById(R.id.retry);
+        if(retry!=null) {
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+                    ft.replace(R.id.layout, new HeartRateDialogFragment());
+                    ft.commit();
+                }
+            });
+        }
+        refer=(Button)getActivity().findViewById(R.id.refer);
+        if(refer!=null) {
+            refer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), referenceActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        text = (TextView)getActivity(). findViewById(R.id.text);
+        return super.onCreateView(inflater,container,savedInstanceState);
+    }
+
 
     @Override
     public void onResume() {
