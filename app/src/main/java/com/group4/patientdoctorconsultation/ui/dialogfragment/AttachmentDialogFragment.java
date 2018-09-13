@@ -37,10 +37,10 @@ public class AttachmentDialogFragment extends PacketItemDialog {
     private final static int RC_OPEN_FILE = 1;
     private final static String TAG = AttachmentDialogFragment.class.getSimpleName();
 
-    TextView fileName;
-    String firestoreUri;
-    ImageView imageView;
-    ProgressBar loadingIcon;
+    private TextView fileName;
+    private String firestoreUri;
+    private ImageView imageView;
+    private ProgressBar loadingIcon;
 
     @Override
     public String getDialogResult() {

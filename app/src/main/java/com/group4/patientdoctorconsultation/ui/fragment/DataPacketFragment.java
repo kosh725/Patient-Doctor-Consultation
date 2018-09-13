@@ -49,7 +49,7 @@ public class DataPacketFragment extends FirestoreFragment implements View.OnClic
 
     private PacketItemAdapter packetItemAdapter;
     private DataPacketViewModel viewModel;
-    FragmentDataPacketBinding binding;
+    private FragmentDataPacketBinding binding;
 
     @Nullable
     @Override

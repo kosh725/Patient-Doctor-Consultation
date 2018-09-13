@@ -20,9 +20,9 @@ public class ProfileViewModel extends ViewModel implements FirebaseAuth.AuthStat
     private final MutableLiveData<Boolean> isSignedIn = new MutableLiveData<>();
     private final MutableLiveData<String> profileId = new MutableLiveData<>();
 
-    private LiveData<FailableResource<Profile>> profile;
-    private LiveData<FailableResource<List<Profile>>> linkedProfiles;
-    private FirebaseAuth firebaseAuth;
+    private final LiveData<FailableResource<Profile>> profile;
+    private final LiveData<FailableResource<List<Profile>>> linkedProfiles;
+    private final FirebaseAuth firebaseAuth;
 
     ProfileViewModel(ProfileRepository profileRepository, FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;

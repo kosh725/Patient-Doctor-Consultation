@@ -1,9 +1,6 @@
 package com.group4.patientdoctorconsultation.data.model;
 
-import com.google.firebase.firestore.Exclude;
 import com.group4.patientdoctorconsultation.common.IndexedFirestoreResource;
-
-import java.util.List;
 
 public class DataPacket extends IndexedFirestoreResource {
 

@@ -16,7 +16,7 @@ import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
 public abstract class PacketItemDialog extends DialogFragment {
 
     public static final String EXTRA_RESULT = "extra_result";
-    AlertDialog alertDialog;
+    private AlertDialog alertDialog;
 
     @NonNull
     @Override
@@ -51,7 +51,7 @@ public abstract class PacketItemDialog extends DialogFragment {
         return alertDialog;
     }
 
-    public AlertDialog getAlertDialog() {
+    protected AlertDialog getAlertDialog() {
         return alertDialog;
     }
 
@@ -59,7 +59,8 @@ public abstract class PacketItemDialog extends DialogFragment {
         return true;
     }
 
-    protected boolean cancelEnabledByDefault() {
+    @SuppressWarnings("SameReturnValue")
+    private boolean cancelEnabledByDefault() {
         return true;
     }
 
@@ -75,9 +76,9 @@ public abstract class PacketItemDialog extends DialogFragment {
         return new DataPacketItem();
     }
 
-    abstract public String getDialogResult();
+    protected abstract String getDialogResult();
 
-    abstract public DataPacketItem.DataPacketItemType getPacketItemType();
+    protected abstract DataPacketItem.DataPacketItemType getPacketItemType();
 
-    abstract public View getView(LayoutInflater inflater);
+    protected abstract View getView(LayoutInflater inflater);
 }

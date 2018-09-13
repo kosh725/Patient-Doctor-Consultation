@@ -67,7 +67,7 @@ public class HeartRateDialogFragment extends PacketItemDialog {
         camera = null;
     }
 
-    private static Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+    private static final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
 
         @Override
         public void onPreviewFrame(byte[] data, Camera cam) {
@@ -161,7 +161,7 @@ public class HeartRateDialogFragment extends PacketItemDialog {
         }
     };
 
-    private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+    private static final SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
         /**
          * {@inheritDoc}

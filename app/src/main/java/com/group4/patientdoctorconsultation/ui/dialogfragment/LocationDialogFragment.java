@@ -15,7 +15,7 @@ import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
 
 public class LocationDialogFragment extends PacketItemDialog {
 
-    TextView locationText;
+    private TextView locationText;
 
     @Override
     public String getDialogResult() {

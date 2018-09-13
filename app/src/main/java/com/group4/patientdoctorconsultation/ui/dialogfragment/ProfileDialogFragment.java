@@ -17,8 +17,8 @@ import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
 public class ProfileDialogFragment extends PacketItemDialog {
 
-    RecyclerView profileList;
-    Profile profile;
+    private RecyclerView profileList;
+    private Profile profile;
 
     @Override
     public String getDialogResult(){

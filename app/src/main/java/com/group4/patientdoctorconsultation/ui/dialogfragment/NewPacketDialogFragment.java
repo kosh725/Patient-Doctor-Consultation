@@ -11,7 +11,7 @@ import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
 
 public class NewPacketDialogFragment extends PacketItemDialog {
 
-    EditText inputText;
+    private EditText inputText;
 
     @Override
     public String getDialogResult(){
