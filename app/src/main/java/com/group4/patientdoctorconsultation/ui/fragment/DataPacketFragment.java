@@ -18,33 +18,38 @@ import android.widget.Toast;
 
 import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.common.FirestoreFragment;
+import com.group4.patientdoctorconsultation.common.LiveResultListener;
 import com.group4.patientdoctorconsultation.common.PacketItemDialog;
 import com.group4.patientdoctorconsultation.common.SwipeDeleteAction;
 import com.group4.patientdoctorconsultation.data.adapter.PacketItemAdapter;
 import com.group4.patientdoctorconsultation.data.model.DataPacket;
 import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
+import com.group4.patientdoctorconsultation.data.model.Profile;
 import com.group4.patientdoctorconsultation.databinding.FragmentDataPacketBinding;
+import com.group4.patientdoctorconsultation.ui.NavigationActivity;
 import com.group4.patientdoctorconsultation.ui.dialogfragment.AttachmentDialogFragment;
+import com.group4.patientdoctorconsultation.ui.dialogfragment.CommentDialogFragment;
 import com.group4.patientdoctorconsultation.ui.dialogfragment.HeartRateDialogFragment;
 import com.group4.patientdoctorconsultation.ui.dialogfragment.LocationDialogFragment;
 import com.group4.patientdoctorconsultation.ui.dialogfragment.ProfileDialogFragment;
 import com.group4.patientdoctorconsultation.ui.dialogfragment.TextDialogFragment;
-import com.group4.patientdoctorconsultation.utilities.DataPacketItemManager;
 import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.DataPacketViewModel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class DataPacketFragment extends FirestoreFragment implements View.OnClickListener {
 
-    private static final int RC_PACKET_ITEM = 1;
-    private static final int RC_PACKET_DOCTOR = 2;
+    private static final int RC_ADD_PACKET_ITEM = 1;
+    private static final int RC_UPDATE_PACKET_ITEM = 2;
+    private static final int RC_SET_PACKET_DOCTOR = 3;
     private static final String TAG = DataPacketFragment.class.getSimpleName();
 
     private PacketItemAdapter packetItemAdapter;
     private DataPacketViewModel viewModel;
-    FragmentDataPacketBinding binding;
+    private FragmentDataPacketBinding binding;
 
     @Nullable
     @Override
@@ -56,8 +61,13 @@ public class DataPacketFragment extends FirestoreFragment implements View.OnClic
 
         viewModel.getActivePacket().observe(this, activePacket -> {
             if (activePacket != null && handleFirestoreResult(activePacket)) {
-                updatePacketBinding(activePacket.getResource());
                 binding.setDataPacket(activePacket.getResource());
+            }
+        });
+
+        viewModel.getActivePacketItems().observe(this, packetItems -> {
+            if(packetItems != null && handleFirestoreResult(packetItems)){
+                updatePacketBinding(packetItems.getResource());
             }
         });
 
@@ -70,11 +80,11 @@ public class DataPacketFragment extends FirestoreFragment implements View.OnClic
         return binding.getRoot();
     }
 
-    @SuppressLint("CommitTransaction")
+
     @Override
     public void onClick(View view) {
         PacketItemDialog itemDialog;
-        int requestCode = RC_PACKET_ITEM;
+        int requestCode = RC_ADD_PACKET_ITEM;
 
         switch (view.getId()){
             case R.id.new_attachment:
@@ -91,67 +101,77 @@ public class DataPacketFragment extends FirestoreFragment implements View.OnClic
                 break;
             case R.id.doctor_icon:
                 itemDialog = new ProfileDialogFragment();
-                requestCode = RC_PACKET_DOCTOR;
+                requestCode = RC_SET_PACKET_DOCTOR;
                 break;
             default:
                 itemDialog = new TextDialogFragment();
                 break;
         }
 
-        itemDialog.setTargetFragment(this, requestCode);
-        itemDialog.show(Objects.requireNonNull(getFragmentManager()).beginTransaction(), TAG);
+        openPacketItemDialog(itemDialog, requestCode);
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_PACKET_ITEM && resultCode == Activity.RESULT_OK) {
-            try {
-                DataPacketItem result = Objects.requireNonNull(
-                        (DataPacketItem) data.getSerializableExtra(TextDialogFragment.EXTRA_RESULT)
-                );
-
-                DataPacket dataPacket = binding.getDataPacket();
-                List<DataPacketItem> dataPacketItems = packetItemAdapter.getListItems();
-
-                dataPacketItems.add(result);
-
-                updateDataPacket(dataPacket, dataPacketItems);
-
-            } catch (Exception e) {
-                Log.w(TAG, e.getMessage());
-            }
-        }else if(requestCode == RC_PACKET_DOCTOR && resultCode == Activity.RESULT_OK){
-            try {
-                DataPacketItem result = Objects.requireNonNull(
-                        (DataPacketItem) data.getSerializableExtra(TextDialogFragment.EXTRA_RESULT)
-                );
-
-                DataPacket dataPacket = binding.getDataPacket();
-                List<DataPacketItem> dataPacketItems = packetItemAdapter.getListItems();
-
-                dataPacket.setDoctorId(result.getValue());
-                dataPacket.setDoctorName(result.getDisplayValue());
-
-                updateDataPacket(dataPacket, dataPacketItems);
-
-            } catch (Exception e) {
-                Log.w(TAG, e.getMessage());
-            }
+        List<Integer> requestCodes = Arrays.asList(RC_ADD_PACKET_ITEM, RC_UPDATE_PACKET_ITEM , RC_SET_PACKET_DOCTOR);
+        if(resultCode != Activity.RESULT_OK || !requestCodes.contains(requestCode)) {
+            return;
         }
+
+        try{
+            LiveResultListener<?> listener = null;
+            DataPacket dataPacket = binding.getDataPacket();
+            DataPacketItem result = Objects.requireNonNull(
+                (DataPacketItem) data.getSerializableExtra(PacketItemDialog.EXTRA_RESULT)
+            );
+
+            switch (requestCode) {
+                case RC_ADD_PACKET_ITEM:
+                    listener = viewModel.addDataPacketItem(dataPacket, result);
+                    break;
+                case RC_UPDATE_PACKET_ITEM:
+                    listener = viewModel.updatePacketItem(dataPacket, result);
+                    break;
+                case RC_SET_PACKET_DOCTOR:
+                    dataPacket.setDoctorId(result.getValue());
+                    dataPacket.setDoctorName(result.getDisplayValue());
+                    listener = viewModel.updateDataPacket(dataPacket);
+                    break;
+            }
+
+            listener.observe(this, actionResult -> {
+                if (actionResult != null && handleFirestoreResult(actionResult)) {
+                    Toast.makeText(requireContext(), "Saved", Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            Log.w(TAG, e.getMessage());
+        }
+
     }
 
     private void initialisePacketItemList(RecyclerView packetItemList) {
-        packetItemAdapter = new PacketItemAdapter(packetItem -> {});
+        packetItemAdapter = new PacketItemAdapter(packetItem -> {
+            if(((NavigationActivity) requireActivity()).getProfileType() == Profile.ProfileType.DOCTOR){
+                openPacketItemDialog(CommentDialogFragment.newInstance(packetItem), RC_UPDATE_PACKET_ITEM);
+            }
+        });
         packetItemList.setLayoutManager(new LinearLayoutManager(requireContext()));
         packetItemList.setAdapter(packetItemAdapter);
 
         SwipeDeleteAction swipeDeleteAction = new SwipeDeleteAction(requireContext()) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                DataPacketItem packetItem = packetItemAdapter.getItem(viewHolder.getAdapterPosition());
                 packetItemAdapter.removeAt(viewHolder.getAdapterPosition());
-                updateDataPacket(binding.getDataPacket(), packetItemAdapter.getListItems());
+                viewModel.deleteDataPacketItem(binding.getDataPacket(), packetItem).observe( DataPacketFragment.this, result -> {
+                    if(result != null && handleFirestoreResult(result) && result.getResource()){
+                        Toast.makeText(requireContext(), "Saved", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         };
 
@@ -159,36 +179,27 @@ public class DataPacketFragment extends FirestoreFragment implements View.OnClic
         itemTouchHelper.attachToRecyclerView(packetItemList);
     }
 
-    private void updatePacketBinding(DataPacket newPacket) {
-        List<DataPacketItem> dataPacketItems = DataPacketItemManager.breakDownDataPacket(newPacket);
-        packetItemAdapter.replaceListItems(dataPacketItems);
-
-        updateAttachmentDisplayText(newPacket.getDocumentReferences());
-
+    private void updatePacketBinding(List<DataPacketItem> newPacketItems) {
+        packetItemAdapter.replaceListItems(newPacketItems);
+        updateAttachmentDisplayText(newPacketItems);
     }
 
-    private void updateDataPacket(DataPacket dataPacket, List<DataPacketItem> packetItems) {
-        DataPacket newDataPacket = DataPacketItemManager.buildDataPacket(dataPacket, packetItems);
-
-        viewModel.updateDataPacket(newDataPacket).observe( this, result -> {
-            if(result != null && handleFirestoreResult(result) && result.getResource()){
-                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void updateAttachmentDisplayText(List<String> documentReferences) {
-        if(documentReferences == null || documentReferences.isEmpty()){
+    private void updateAttachmentDisplayText(List<DataPacketItem> packetItems) {
+        if(packetItems == null || packetItems.isEmpty()){
             return;
         }
 
-        for(String documentReference : documentReferences){
-            viewModel.getFileMetaData(documentReference).observe(this, storageMetadata -> {
+        for(DataPacketItem packetItem : packetItems){
+            if(packetItem.getDataPacketItemType() != DataPacketItem.DataPacketItemType.DOCUMENT_REFERENCE){
+                continue;
+            }
+
+            viewModel.getFileMetaData(packetItem.getValue()).observe(this, storageMetadata -> {
                 if(storageMetadata != null && handleFirestoreResult(storageMetadata)){
                     List<DataPacketItem> newItems = packetItemAdapter.getListItems();
 
                     for(DataPacketItem dataPacketItem : newItems){
-                        if(dataPacketItem.getValue().equals(documentReference)){
+                        if(dataPacketItem.getValue().equals(packetItem.getValue())){
                             dataPacketItem.setDisplayValue(storageMetadata.getResource().getName());
                         }
                     }
@@ -197,5 +208,11 @@ public class DataPacketFragment extends FirestoreFragment implements View.OnClic
                 }
             });
         }
+    }
+
+    @SuppressLint("CommitTransaction")
+    private void openPacketItemDialog(PacketItemDialog packetItemDialog, int requestCode){
+        packetItemDialog.setTargetFragment(this, requestCode);
+        packetItemDialog.show(Objects.requireNonNull(getFragmentManager()).beginTransaction(), TAG);
     }
 }

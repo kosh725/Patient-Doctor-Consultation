@@ -16,8 +16,8 @@ import java.util.Objects;
 
 public abstract class SwipeDeleteAction extends ItemTouchHelper.SimpleCallback {
 
-    private Drawable deleteIcon;
-    private int backgroundColor;
+    private final Drawable deleteIcon;
+    private final int backgroundColor;
 
     protected SwipeDeleteAction(Context context) {
         super(0, ItemTouchHelper.LEFT);

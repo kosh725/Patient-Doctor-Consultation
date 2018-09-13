@@ -50,6 +50,10 @@ public abstract class BindingAdapter<L, B extends ViewDataBinding>
         notifyItemRemoved(position);
     }
 
+    public L getItem(int position){
+        return listItems.get(position);
+    }
+
     protected abstract B createBinding(LayoutInflater inflater, ViewGroup parent);
     protected abstract void bind(B binding, L item);
 

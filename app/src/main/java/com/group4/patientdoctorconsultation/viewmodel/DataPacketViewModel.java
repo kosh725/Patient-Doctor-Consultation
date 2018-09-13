@@ -13,6 +13,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.group4.patientdoctorconsultation.common.FailableResource;
 import com.group4.patientdoctorconsultation.common.LiveResultListener;
 import com.group4.patientdoctorconsultation.data.model.DataPacket;
+import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
 import com.group4.patientdoctorconsultation.data.repository.DataPacketRepository;
 
 import java.io.InputStream;
@@ -28,7 +29,7 @@ public class DataPacketViewModel extends ViewModel implements FirebaseAuth.AuthS
     private final LiveData<FailableResource<List<DataPacket>>> dataPackets;
     private final MutableLiveData<String> activePacketId;
     private final LiveData<FailableResource<DataPacket>> activePacket;
-
+    private final LiveData<FailableResource<List<DataPacketItem>>> activePacketItems;
 
     DataPacketViewModel(DataPacketRepository dataPacketRepository, FirebaseAuth firebaseAuth) {
         this.dataPacketRepository = dataPacketRepository;
@@ -38,6 +39,7 @@ public class DataPacketViewModel extends ViewModel implements FirebaseAuth.AuthS
         activePacketId = new MutableLiveData<>();
         dataPackets = Transformations.switchMap(profileId, dataPacketRepository::getDataPacketsByPatientId);
         activePacket = Transformations.switchMap(activePacketId, dataPacketRepository::getDataPacketById);
+        activePacketItems = Transformations.switchMap(activePacketId, dataPacketRepository::getDataPacketItemsByPacketId);
     }
 
     @Override
@@ -57,6 +59,10 @@ public class DataPacketViewModel extends ViewModel implements FirebaseAuth.AuthS
         return dataPacketRepository.updateDataPacket(dataPacket);
     }
 
+    public LiveResultListener<Boolean> updatePacketItem(DataPacket dataPacket, DataPacketItem packetItems){
+        return dataPacketRepository.updateDataPacketItem(dataPacket, packetItems);
+    }
+
     public LiveData<FailableResource<List<DataPacket>>> getDataPackets(){
         return dataPackets;
     }
@@ -65,9 +71,21 @@ public class DataPacketViewModel extends ViewModel implements FirebaseAuth.AuthS
         return activePacket;
     }
 
+    public LiveData<FailableResource<List<DataPacketItem>>> getActivePacketItems(){
+        return activePacketItems;
+    }
+
     public LiveResultListener<DocumentReference> addDataPacket(DataPacket dataPacket){
         dataPacket.setPatientId(profileId.getValue());
         return dataPacketRepository.addDataPacket(dataPacket);
+    }
+
+    public LiveResultListener<DocumentReference> addDataPacketItem(DataPacket dataPacket, DataPacketItem dataPacketItem){
+        return dataPacketRepository.addDataPacketItem(dataPacket, dataPacketItem);
+    }
+
+    public LiveResultListener<Boolean> deleteDataPacketItem(DataPacket dataPacket, DataPacketItem dataPacketItem){
+        return dataPacketRepository.deleteDataPacketItem(dataPacket, dataPacketItem);
     }
 
     public void setActivePacketId(String activePacketId){

@@ -1,5 +1,6 @@
 package com.group4.patientdoctorconsultation.data.model;
 
+import com.google.firebase.firestore.Exclude;
 import com.group4.patientdoctorconsultation.common.IndexedFirestoreResource;
 
 import java.util.Date;
@@ -7,23 +8,13 @@ import java.util.Map;
 
 public class Profile extends IndexedFirestoreResource {
 
+    public enum ProfileType{DOCTOR, PATIENT}
+
     public static final String COLLECTION_NAME = "profiles";
 
-    public static final String PROFILE_TYPE_PATIENT = "patient";
-    public static final String PROFILE_TYPE_DOCTOR = "doctor";
-
-    public static final String FIELD_PROFILE_TYPE = "profileType";
-    public static final String FIELD_USER_NAME = "userName";
-    public static final String FIELD_FIRST_NAME = "firstName";
-    public static final String FIELD_LAST_NAME = "lastName";
-    public static final String FIELD_GENDER = "gender";
-    public static final String FIELD_AGE_IN_YEARS = "dateOfBirth";
-    public static final String FIELD_HEIGHT_IN_CENTIMETRES = "heightInCentimetres";
-    public static final String FIELD_WEIGHT_IN_KG = "weightInKg";
-    public static final String FIELD_MEDICAL_CONDITIONS = "medicalConditions";
     public static final String FIELD_LINKED_PROFILES = "linkedProfiles";
 
-    private String profileType;
+    private ProfileType profileType;
     private String userName;
     private String firstName;
     private String lastName;
@@ -34,12 +25,26 @@ public class Profile extends IndexedFirestoreResource {
     private String medicalConditions;
     private Map<String, Boolean> linkedProfiles;
 
-    public String getProfileType() {
+    /*
+     * Exclude getters and setters from firebase as it can't handle Enums
+     */
+
+    @Exclude
+    public ProfileType getProfileType() {
         return profileType;
     }
 
-    public void setProfileType(String profileType) {
+    @Exclude
+    public void setProfileType(ProfileType profileType) {
         this.profileType = profileType;
+    }
+
+    public String getProfileTypeString(){
+        return profileType.toString();
+    }
+
+    public void setProfileTypeString(String profileType){
+        this.profileType = ProfileType.valueOf(profileType);
     }
 
     public String getUserName() {

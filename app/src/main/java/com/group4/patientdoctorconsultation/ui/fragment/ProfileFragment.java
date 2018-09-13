@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.common.FirestoreFragment;
+import com.group4.patientdoctorconsultation.data.model.Profile;
 import com.group4.patientdoctorconsultation.databinding.FragmentProfileBinding;
 import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
@@ -67,7 +68,9 @@ public class ProfileFragment extends FirestoreFragment {
     }
 
     public void submit(View view){ //Do not remove parameter, required for data binding
-        viewModel.updateProfile(binding.getProfile()).observe(this, isComplete -> {
+        Profile profile = binding.getProfile();
+        profile.setProfileType(Profile.ProfileType.DOCTOR);
+        viewModel.updateProfile(profile).observe(this, isComplete -> {
             if(isComplete != null && handleFirestoreResult(isComplete) && isComplete.getResource()){
                 Toast.makeText(requireContext(), "Saved",Toast.LENGTH_LONG).show();
             }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="dataPacketItem"
+            type="com.group4.patientdoctorconsultation.data.model.DataPacketItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="@{dataPacketItem.displayValue}"
+            tools:text="Item Text" />
+
+        <ImageView
+            android:id="@+id/image_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:padding="20dp"
+            android:visibility="@{TextUtils.isEmpty(dataPacketItem.imageUrl) ? View.GONE : View.VISIBLE}"
+            app:imageUrl="@{dataPacketItem.imageUrl}"
+            tools:src="@drawable/ic_favorite_black_24dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/colorOffWhite"
+            android:hint="@string/hint_comment"
+            android:minHeight="150dp"
+            android:padding="10dp"
+            android:text="@={dataPacketItem.comment}" />
+
+    </LinearLayout>
+
+</layout>

@@ -4,9 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseMethod;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.group4.patientdoctorconsultation.common.GlideApp;
 
 import java.text.SimpleDateFormat;
@@ -27,9 +31,12 @@ public class BindingAdapters {
     @BindingAdapter("imageUrl")
     public static void setImageUrl(ImageView imageView, String url) {
         Context context = imageView.getContext();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.transforms(new CenterCrop(), new RoundedCorners(100));
 
         GlideApp.with(context)
                 .load(url)
+                .apply(requestOptions)
                 .into(imageView);
     }
 
