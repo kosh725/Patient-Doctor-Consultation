@@ -26,7 +26,7 @@ public abstract class PacketItemDialog extends DialogFragment {
         }
 
         alertDialog = new AlertDialog.Builder(requireActivity())
-                .setTitle(getTitle())
+                .setTitle(getTitle().replace("_", " "))
                 .setView(getView(getTargetFragment().getLayoutInflater()))
                 .setNegativeButton("CANCEL", (dialog, which) -> {
                     dialog.cancel();

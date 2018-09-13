@@ -19,7 +19,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.common.FirestoreFragment;
@@ -110,6 +113,8 @@ public class AttachmentDialogFragment extends PacketItemDialog {
             if (uriFirestoreResource != null &&
                     ((FirestoreFragment) getTargetFragment()).handleFirestoreResult(uriFirestoreResource)) {
                 firestoreUri = uriFirestoreResource.getResource().toString();
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.transforms(new CenterCrop(), new RoundedCorners(100));
 
                 GlideApp.with(requireContext())
                         .load(uriFirestoreResource.getResource())
@@ -117,17 +122,18 @@ public class AttachmentDialogFragment extends PacketItemDialog {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 getAlertDialog().getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                                loadingIcon.setVisibility(View.INVISIBLE);
+                                loadingIcon.setVisibility(View.GONE);
                                 return false;
                             }
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 getAlertDialog().getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                                loadingIcon.setVisibility(View.INVISIBLE);
+                                loadingIcon.setVisibility(View.GONE);
                                 return false;
                             }
                         })
+                        .apply(requestOptions)
                         .into(imageView);
 
             }

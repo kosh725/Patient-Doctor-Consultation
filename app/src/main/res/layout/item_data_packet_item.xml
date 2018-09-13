@@ -5,7 +5,9 @@
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
 
         <variable
             name="dataPacketItem"
@@ -16,8 +18,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/colorOffWhite">
+        android:layout_margin="5dp">
 
         <!--TODO - replace this with drawableStart (requires API 21)-->
         <LinearLayout
@@ -29,7 +30,10 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="25dp"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
                 android:src="@{dataPacketItem.iconResourceId}"
                 tools:src="@drawable/ic_favorite_black_24dp" />
 
@@ -41,13 +45,15 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:autoLink="web"
                     android:gravity="center"
                     android:text="@{dataPacketItem.displayValue}"
                     android:visibility="@{dataPacketItem.displayValue == null ? View.GONE : View.VISIBLE}"
-                    tools:text="Packet Title"
-                    android:autoLink="web"/>
+                    tools:text="Packet Title" />
 
                 <ImageView
                     android:id="@+id/image_preview"
@@ -57,20 +63,34 @@
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
                     android:scaleType="fitXY"
+                    android:padding="10dp"
+                    android:visibility="@{TextUtils.isEmpty(dataPacketItem.imageUrl) ? View.GONE : View.VISIBLE}"
                     app:imageUrl="@{dataPacketItem.imageUrl}"
-                    tools:src="@drawable/ic_favorite_black_24dp"/>
+                    tools:src="@drawable/ic_favorite_black_24dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="10dp"
+                    android:background="?android:attr/listDivider"
+                    android:visibility="@{TextUtils.isEmpty(dataPacketItem.comment) ? View.GONE : View.VISIBLE}"
+                    tools:ignore="PxUsage" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Comments"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="@string/title_comments"
+                    android:visibility="@{TextUtils.isEmpty(dataPacketItem.comment) ? View.GONE : View.VISIBLE}" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
                     android:text="@{dataPacketItem.comment}"
-                    android:gravity="center"/>
+                    android:visibility="@{TextUtils.isEmpty(dataPacketItem.comment) ? View.GONE : View.VISIBLE}"
+                    tools:text="Comment 1" />
 
             </LinearLayout>
 
