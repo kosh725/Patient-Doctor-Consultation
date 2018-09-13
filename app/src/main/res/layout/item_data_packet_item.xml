@@ -60,6 +60,18 @@
                     app:imageUrl="@{dataPacketItem.imageUrl}"
                     tools:src="@drawable/ic_favorite_black_24dp"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Comments"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{dataPacketItem.comment}"
+                    android:gravity="center"/>
+
             </LinearLayout>
 
         </LinearLayout>

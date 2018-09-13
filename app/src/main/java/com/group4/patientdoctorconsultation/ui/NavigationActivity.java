@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.group4.patientdoctorconsultation.R;
+import com.group4.patientdoctorconsultation.data.model.Profile;
 import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
@@ -26,6 +27,7 @@ public class NavigationActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 1;
     private static final int RC_PERMISSION = 2;
+    private Profile.ProfileType profileType = Profile.ProfileType.PATIENT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,11 @@ public class NavigationActivity extends AppCompatActivity {
                 startSignIn();
             }
         });
+        viewModel.getProfile().observe(this, profile -> {
+            if(profile != null && profile.getResource() != null){
+                profileType = profile.getResource().getProfileType();
+            }
+        });
     }
 
     private void startSignIn() {
@@ -93,4 +100,7 @@ public class NavigationActivity extends AppCompatActivity {
         }
     }
 
+    public Profile.ProfileType getProfileType() {
+        return profileType;
+    }
 }

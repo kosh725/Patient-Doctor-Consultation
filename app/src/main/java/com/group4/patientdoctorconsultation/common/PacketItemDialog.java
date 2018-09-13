@@ -34,7 +34,11 @@ public abstract class PacketItemDialog extends DialogFragment {
                 })
                 .setPositiveButton("SAVE", (dialogInterface, i) -> {
                     Intent result = new Intent();
-                    result.putExtra(EXTRA_RESULT, new DataPacketItem(getPacketItemType(), getDialogResult(), getDialogDisplayResult()));
+                    DataPacketItem dataPacketItem = getDataPacketItem();
+                    dataPacketItem.setDataPacketItemType(getPacketItemType());
+                    dataPacketItem.setValue(getDialogResult());
+                    dataPacketItem.setDisplayValue(getDialogDisplayResult());
+                    result.putExtra(EXTRA_RESULT, dataPacketItem);
                     (getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, result);
                 })
                 .create();
@@ -65,6 +69,10 @@ public abstract class PacketItemDialog extends DialogFragment {
 
     protected String getTitle(){
         return getPacketItemType().toString();
+    }
+
+    protected DataPacketItem getDataPacketItem(){
+        return new DataPacketItem();
     }
 
     abstract public String getDialogResult();

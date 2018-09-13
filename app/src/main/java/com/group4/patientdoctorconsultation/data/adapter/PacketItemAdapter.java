@@ -18,7 +18,9 @@ public class PacketItemAdapter extends BindingAdapter<DataPacketItem, ItemDataPa
 
     @Override
     protected ItemDataPacketItemBinding createBinding(LayoutInflater inflater, ViewGroup parent) {
-        return DataBindingUtil.inflate(inflater, R.layout.item_data_packet_item, parent, false);
+        ItemDataPacketItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_data_packet_item, parent, false);
+        binding.getRoot().setOnClickListener(v -> clickListener.onClicked(binding.getDataPacketItem()));
+        return binding;
     }
 
     @Override

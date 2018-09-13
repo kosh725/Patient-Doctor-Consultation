@@ -27,4 +27,5 @@
     <string name="add">+</string>
     <string name="hint_title">Title</string>
     <string name="hint_enter_text">Enter text</string>
+    <string name="hint_comment">Enter comment</string>
 </resources>
