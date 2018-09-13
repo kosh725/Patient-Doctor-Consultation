@@ -13,6 +13,7 @@ import com.group4.patientdoctorconsultation.common.LiveDocument;
 import com.group4.patientdoctorconsultation.common.LiveQuery;
 import com.group4.patientdoctorconsultation.common.LiveResultListener;
 import com.group4.patientdoctorconsultation.data.model.DataPacket;
+import com.group4.patientdoctorconsultation.data.model.DataPacketItem;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -44,7 +45,6 @@ public class DataPacketRepository {
 
     public LiveResultListener<DocumentReference> addDataPacket(DataPacket dataPacket) {
         LiveResultListener<DocumentReference> liveAdditionListener = new LiveResultListener<>();
-
         dataPacketCollection
                 .add(dataPacket)
                 .addOnSuccessListener(liveAdditionListener)
@@ -62,6 +62,53 @@ public class DataPacketRepository {
                 .addOnFailureListener(liveCompleteListener);
 
         return liveCompleteListener;
+    }
+
+    public LiveQuery<DataPacketItem> getDataPacketItemsByPacketId(String packetId){
+        return new LiveQuery<>(
+                dataPacketCollection
+                        .document(packetId)
+                        .collection(DataPacket.FIELD_ITEMS),
+                DataPacketItem.class
+        );
+    }
+
+    public LiveResultListener<Boolean> updateDataPacketItem(DataPacket dataPacket, DataPacketItem dataPacketItem){
+        LiveResultListener<Boolean> liveCompleteListener = new LiveResultListener<>();
+        dataPacketCollection
+                .document(dataPacket.getId())
+                .collection(DataPacket.FIELD_ITEMS)
+                .document(dataPacketItem.getId())
+                .set(dataPacketItem)
+                .addOnSuccessListener(runnable -> liveCompleteListener.onSuccess(true))
+                .addOnFailureListener(liveCompleteListener);
+
+        return liveCompleteListener;
+    }
+
+    public LiveResultListener<Boolean> deleteDataPacketItem(DataPacket dataPacket, DataPacketItem dataPacketItem){
+        LiveResultListener<Boolean> liveDeletionListener = new LiveResultListener<>();
+        dataPacketCollection
+                .document(dataPacket.getId())
+                .collection(DataPacket.FIELD_ITEMS)
+                .document(dataPacketItem.getId())
+                .delete()
+                .addOnSuccessListener(runnable -> liveDeletionListener.onSuccess(true))
+                .addOnFailureListener(liveDeletionListener);
+
+        return liveDeletionListener;
+    }
+
+    public LiveResultListener<DocumentReference> addDataPacketItem(DataPacket dataPacket, DataPacketItem dataPacketItem){
+        LiveResultListener<DocumentReference> liveAdditionListener = new LiveResultListener<>();
+        dataPacketCollection
+                .document(dataPacket.getId())
+                .collection(DataPacket.FIELD_ITEMS)
+                .add(dataPacketItem)
+                .addOnSuccessListener(liveAdditionListener)
+                .addOnFailureListener(liveAdditionListener);
+
+        return liveAdditionListener;
     }
 
     public LiveResultListener<Uri> uploadAttachment(String packetId, String fileName, InputStream inputStream) {
