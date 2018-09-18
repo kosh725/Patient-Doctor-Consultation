@@ -1,11 +1,13 @@
-package com.group4.patientdoctorconsultation.utilities;
+package com.group4.patientdoctorconsultation.utilities.heartrate;
+
+import android.hardware.Camera;
 
 /**
  * This abstract class is used to process images.
  *
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class ImageProcessor {
+class ImageProcessor {
 
     private static int decodeYUV420SPtoRedSum(byte[] yuv420sp, int width, int height) {
         if (yuv420sp == null) return 0;
@@ -54,12 +56,31 @@ public class ImageProcessor {
      *            Height of the image.
      * @return int representing the average amount of red in the image.
      */
-    public static int decodeYUV420SPtoRedAvg(byte[] yuv420sp, int width, int height) {
+    static int decodeYUV420SPtoRedAvg(byte[] yuv420sp, int width, int height) {
         if (yuv420sp == null) return 0;
 
         final int frameSize = width * height;
 
         int sum = decodeYUV420SPtoRedSum(yuv420sp, width, height);
-        return (sum / frameSize);
+        return sum ;
+    }
+
+    static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
+        Camera.Size result = null;
+
+        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+            if (size.width <= width && size.height <= height) {
+                if (result == null) {
+                    result = size;
+                } else {
+                    int resultArea = result.width * result.height;
+                    int newArea = size.width * size.height;
+
+                    if (newArea < resultArea) result = size;
+                }
+            }
+        }
+
+        return result;
     }
 }

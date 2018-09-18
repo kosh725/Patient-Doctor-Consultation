@@ -33,4 +33,5 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">264592337713075</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb264592337713075</string>
+    <string name="hint_heart_rate">Hole index finger over camera and flash (if present) for at least 10 seconds.    The longer you hold your finger, the more accurate the measurement</string>
 </resources>
