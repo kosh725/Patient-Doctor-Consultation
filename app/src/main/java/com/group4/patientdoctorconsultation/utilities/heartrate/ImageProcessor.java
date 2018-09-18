@@ -1,18 +1,20 @@
-package com.group4.patientdoctorconsultation.utilities;
+package com.group4.patientdoctorconsultation.utilities.heartrate;
 
-/**
- * This abstract class is used to process images.
- *
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
-public class ImageProcessor {
+import android.hardware.Camera;
 
-    private static int decodeYUV420SPtoRedSum(byte[] yuv420sp, int width, int height) {
+
+class ImageProcessor {
+
+    /**
+     * Decodes a YUV420SP encoded image, returning a summation of red pixel brightness
+     * YUV420SP encode function utilised from the Ketai project
+     */
+    static int decodeYUV420SPtoBrightnessRed(byte[] yuv420sp, int width, int height) {
         if (yuv420sp == null) return 0;
 
         final int frameSize = width * height;
 
-        int sum = 0;
+        int redBrightness = 0;
         for (int j = 0, yp = 0; j < height; j++) {
             int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
             for (int i = 0; i < width; i++, yp++) {
@@ -36,30 +38,28 @@ public class ImageProcessor {
 
                 int pixel = 0xff000000 | ((r << 6) & 0xff0000) | ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
                 int red = (pixel >> 16) & 0xff;
-                sum += red;
+                redBrightness += red;
             }
         }
-        return sum;
+        return redBrightness;
     }
 
-    /**
-     * Given a byte array representing a yuv420sp image, determine the average
-     * amount of red in the image. Note: returns 0 if the byte array is NULL.
-     *
-     * @param yuv420sp
-     *            Byte array representing a yuv420sp image
-     * @param width
-     *            Width of the image.
-     * @param height
-     *            Height of the image.
-     * @return int representing the average amount of red in the image.
-     */
-    public static int decodeYUV420SPtoRedAvg(byte[] yuv420sp, int width, int height) {
-        if (yuv420sp == null) return 0;
+    static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
+        Camera.Size result = null;
 
-        final int frameSize = width * height;
+        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+            if (size.width <= width && size.height <= height) {
+                if (result == null) {
+                    result = size;
+                } else {
+                    int resultArea = result.width * result.height;
+                    int newArea = size.width * size.height;
 
-        int sum = decodeYUV420SPtoRedSum(yuv420sp, width, height);
-        return (sum / frameSize);
+                    if (newArea < resultArea) result = size;
+                }
+            }
+        }
+
+        return result;
     }
 }
