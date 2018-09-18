@@ -14,6 +14,10 @@ import static com.group4.patientdoctorconsultation.utilities.heartrate.HeartRate
 import static com.group4.patientdoctorconsultation.utilities.heartrate.HeartRateCalculator.FrameColour.RED;
 import static com.group4.patientdoctorconsultation.utilities.heartrate.ImageProcessor.getSmallestPreviewSize;
 
+
+/**
+ * Inspired by heart rate algorithm designed by Justin Wetherell
+ */
 public class HeartRateCalculator implements Camera.PreviewCallback, SurfaceHolder.Callback{
 
     public enum FrameColour { GREEN, RED }
@@ -89,11 +93,11 @@ public class HeartRateCalculator implements Camera.PreviewCallback, SurfaceHolde
     }
 
     private void processFrame(byte[] data, Camera.Size frameSize) {
-        int redInCurrentFrame = ImageProcessor.decodeYUV420SPtoRedAvg(data.clone(), frameSize.width, frameSize.height);
+        int redInCurrentFrame = ImageProcessor.decodeYUV420SPtoBrightnessRed(data.clone(), frameSize.width, frameSize.height);
         int averageRed = (int) ArrayUtils.calculateAverage(redInFrames);
 
         // If difference between average and current value is greater than 30%, drop the current measurements as they are invalid
-        // This can occur if the user moves their fin
+        // This can occur if the user moves their finger away from or onto the camera
         if(averageRed != 0 && (Math.abs(redInCurrentFrame - averageRed) * 100 / averageRed) > 30){
             resetMeasurements();
             return;
