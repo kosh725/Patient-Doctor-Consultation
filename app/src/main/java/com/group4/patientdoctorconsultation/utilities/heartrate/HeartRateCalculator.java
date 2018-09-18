@@ -23,7 +23,7 @@ public class HeartRateCalculator implements Camera.PreviewCallback, SurfaceHolde
     public enum FrameColour { GREEN, RED }
 
     private static final String TAG = HeartRateCalculator.class.getSimpleName();
-    private static final int MINIMUM_SAMPLE_SECONDS = 10;
+    private static final int MINIMUM_SAMPLE_SECONDS = 4;
     private static final AtomicBoolean processing = new AtomicBoolean(false);
 
     private FrameColour lastFrameColour = GREEN;
