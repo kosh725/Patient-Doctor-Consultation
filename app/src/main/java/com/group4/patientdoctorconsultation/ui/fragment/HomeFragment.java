@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.group4.patientdoctorconsultation.R;
 import com.group4.patientdoctorconsultation.common.FirestoreFragment;
@@ -129,7 +130,14 @@ public class HomeFragment extends FirestoreFragment
                             }
                         });
             } else if (requestCode == RC_PROFILE){
-                DependencyInjector.provideProfileViewModel(requireActivity()).addLinkedProfile(result.getValue());
+                DependencyInjector
+                        .provideProfileViewModel(requireActivity())
+                        .addLinkedProfile(result.getValue())
+                        .observe(HomeFragment.this, updateResult -> {
+                            if(updateResult != null && handleFirestoreResult(updateResult)){
+                                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
 
         } catch (Exception e) {

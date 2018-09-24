@@ -1,19 +1,15 @@
 package com.group4.patientdoctorconsultation.data.repository;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
 import com.group4.patientdoctorconsultation.common.LiveDocument;
 import com.group4.patientdoctorconsultation.common.LiveQuery;
 import com.group4.patientdoctorconsultation.common.LiveResultListener;
 import com.group4.patientdoctorconsultation.data.model.Profile;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -67,22 +63,36 @@ public class ProfileRepository {
     }
 
     public LiveResultListener<Boolean> addLinkedProfile(String currentProfileId, String linkedProfileId){
-        final DocumentReference profileReference = profileCollection.document(currentProfileId);
         LiveResultListener<Boolean> liveCompleteListener = new LiveResultListener<>();
+        final DocumentReference linkedProfileReference = profileCollection.document(linkedProfileId);
+        final DocumentReference profileReference = profileCollection.document(currentProfileId);
 
         firestore.runTransaction((Transaction.Function<Void>) transaction -> {
+            Profile linkedProfile = transaction.get(linkedProfileReference).toObject(Profile.class);
             Profile profile = transaction.get(profileReference).toObject(Profile.class);
-            Map<String, Boolean> linkedProfiles = Objects.requireNonNull(profile).getLinkedProfiles();
-            if (linkedProfiles == null) return null;
-            linkedProfiles.put(linkedProfileId, true);
-            profile.setLinkedProfiles(linkedProfiles);
-            transaction.set(profileReference, profile);
+
+            linkProfileId(linkedProfile, currentProfileId);
+            linkProfileId(profile, linkedProfileId);
+
+            transaction.set(linkedProfileReference, Objects.requireNonNull(linkedProfile));
+            transaction.set(profileReference, Objects.requireNonNull(profile));
+
+
             return null;
         })
         .addOnSuccessListener(runnable -> {liveCompleteListener.onSuccess(true);})
         .addOnFailureListener(liveCompleteListener);
 
         return liveCompleteListener;
+    }
+
+    private void linkProfileId(Profile profile, String linkedProfileId){
+        Map<String, Boolean> linkedProfiles = Objects.requireNonNull(profile).getLinkedProfiles();
+        if (linkedProfiles == null){
+            linkedProfiles = new HashMap<>();
+        }
+        linkedProfiles.put(linkedProfileId, true);
+        profile.setLinkedProfiles(linkedProfiles);
     }
 
     public static synchronized ProfileRepository getInstance(FirebaseFirestore firestore){
