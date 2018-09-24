@@ -1,6 +1,7 @@
 package com.group4.patientdoctorconsultation.ui.fragment;
 
 import android.app.DatePickerDialog;
+import android.arch.lifecycle.LiveData;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.group4.patientdoctorconsultation.R;
+import com.group4.patientdoctorconsultation.common.FailableResource;
 import com.group4.patientdoctorconsultation.common.FirestoreFragment;
 import com.group4.patientdoctorconsultation.data.model.Profile;
 import com.group4.patientdoctorconsultation.databinding.FragmentProfileBinding;
@@ -20,10 +22,13 @@ import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class ProfileFragment extends FirestoreFragment {
+
 
     private ProfileViewModel viewModel;
     private FragmentProfileBinding binding;
