@@ -195,17 +195,31 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="0dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="150dp"
-            android:layout_marginEnd="150dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
             android:onClick="@{profileHandler::submit}"
+
             android:text="@string/submit"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/edit_save"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_medical_conditions" />
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:text="Sign Out"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/edit_save"
+            app:layout_constraintTop_toBottomOf="@+id/edit_medical_conditions"/>
 
 
     </android.support.constraint.ConstraintLayout>

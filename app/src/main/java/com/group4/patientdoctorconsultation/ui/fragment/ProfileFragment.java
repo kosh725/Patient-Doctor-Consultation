@@ -38,7 +38,7 @@ public class ProfileFragment extends FirestoreFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
          binding.setProfileHandler(this);
-         binding.signOutButton.setOnLongClickListener(view -> logout(null));
+         binding.signOutButton.setOnClickListener(view -> logout(null));
          bindAge(binding.editAge);
          observeProfile();
          return binding.getRoot();
