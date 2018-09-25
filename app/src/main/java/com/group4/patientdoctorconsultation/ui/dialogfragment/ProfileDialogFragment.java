@@ -16,8 +16,6 @@ import com.group4.patientdoctorconsultation.data.model.Profile;
 import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ProfileDialogFragment extends PacketItemDialog {

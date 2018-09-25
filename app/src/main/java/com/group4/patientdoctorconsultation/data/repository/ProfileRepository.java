@@ -80,7 +80,7 @@ public class ProfileRepository {
 
             return null;
         })
-        .addOnSuccessListener(runnable -> {liveCompleteListener.onSuccess(true);})
+        .addOnSuccessListener(runnable -> liveCompleteListener.onSuccess(true))
         .addOnFailureListener(liveCompleteListener);
 
         return liveCompleteListener;

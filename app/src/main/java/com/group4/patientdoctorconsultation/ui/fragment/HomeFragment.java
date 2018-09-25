@@ -31,7 +31,6 @@ import com.group4.patientdoctorconsultation.utilities.DependencyInjector;
 import com.group4.patientdoctorconsultation.viewmodel.DataPacketViewModel;
 import com.group4.patientdoctorconsultation.viewmodel.ProfileViewModel;
 
-import java.util.Map;
 import java.util.Objects;
 
 import androidx.navigation.Navigation;
